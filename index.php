@@ -1,37 +1,42 @@
 <?php
-public function list_directories($dir = '.')
+error_reporting(-1);
+
+// Same as error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+/**
+* 
+*/
+class Wsc 
 {
-	$dirs = [];
-	if ($handle = opendir($dir)) {
-
-	    while (false !== ($entry = readdir($handle))) {
-
-	        if ($entry != "." && $entry != "..") {
-
-	            $dirs[]  = $entry;
-	        }
-	    }
-
-	    closedir($handle);
+	
+	public function __construct()
+	{
+		# code...
 	}
-	return scandir($dir,0);
+
+	public function list_directories($dir = '.')
+	{
+		return scandir($dir,0);
+	}
+	public function response_json($array)
+	{
+		echo json_encode($array);
+	}
 }
-public function response_json($array)
-{
-	echo json_encode($array);
-}
 
 
 
 
 
-$action = $_GET['action'];
 
 
+$Action = $_GET['action'];
+$Application = new Wsc(); 
 
-if ($action === 'scandir') {
+
+if ($Action === 'scandir') {
 	$directory = (isset($_GET['dir'])) ? $_GET['dir'] : '.';
-	response_json(list_directories($directory));
+	$Application->response_json($Application->list_directories($directory));
 } else {
 	echo "Nothing to do...!";
 }
